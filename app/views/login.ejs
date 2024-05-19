@@ -1,31 +1,41 @@
-<%- include('partials/header') %>
+<%- include('partials/auth/header') -%>
 
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="<%= BASE_URL%>/>"><b>Admin</b>LTE</a>
+            <a href="<%= process.env.BASE_URL%>/>"><b>Admin</b>LTE</a>
         </div>
         <!-- /.login-logo -->
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
-                <form action="<%= BASE_URL %>/login" method="post">
+                <form action="<%= process.env.BASE_URL %>/login" method="post">
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
+                        <input type="email" class="form-control" placeholder="Email" name="email" value="<%= formData.email !== undefined ? formData.email : '' %>">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
                             </div>
                         </div>
+                        <% if (errors.email !== undefined) { %>
+                        <span class="invalid-feedback" role="alert">
+                            <strong><%= errors.email %></strong>
+                        </span>
+                        <% } %>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password">
+                        <input type="password" class="form-control" placeholder="Password" name="password" value="">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
+                        <% if (errors.password !== undefined) { %>
+                        <span class="invalid-feedback" role="alert">
+                            <strong><%= errors.password %></strong>
+                        </span>
+                        <% } %>
                     </div>
                     <div class="row">
                         <div class="col-8">
@@ -47,10 +57,10 @@
                 <!-- /.social-auth-links -->
 
                 <p class="mb-1">
-                    <a href="<%= BASE_URL %>/forgot-password">I forgot my password</a>
+                    <a href="<%= process.env.BASE_URL %>/forgot-password">I forgot my password</a>
                 </p>
                 <p class="mb-0">
-                    <a href="<%= BASE_URL %>/register" class="text-center">Register a new membership</a>
+                    <a href="<%= process.env.BASE_URL %>/register" class="text-center">Register a new membership</a>
                 </p>
             </div>
             <!-- /.login-card-body -->
@@ -58,7 +68,7 @@
     </div>
     <!-- /.login-box -->
 
-    <%- include('partials/footer') -%>
+    <%- include('partials/auth/footer') -%>
 </body>
 
 </html>

@@ -1,47 +1,55 @@
-<%- include('partials/header') -%>
+<%- include('partials/auth/header') -%>
 
 <body class="hold-transition register-page">
     <div class="register-box">
         <div class="register-logo">
-            <a href="../../index2.html"><b>Admin</b>LTE</a>
+            <a href="<%= process.env.BASE_URL %>/"><b>Admin</b>LTE</a>
         </div>
 
         <div class="card">
             <div class="card-body register-card-body">
                 <p class="login-box-msg">Register a new membership</p>
 
-                <form action="../../index.html" method="post">
+                <form action="<%= process.env.BASE_URL %>/register" method="post">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Full name">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-user"></span>
-                            </div>
-                        </div>
+                        <input type="text" class="form-control <%= errors.firstName !== undefined ? 'is-invalid' : '' %>" placeholder="First Name" name="firstName" value="<%= formData.firstName !== undefined ? formData.firstName : '' %>">
+                        <% if (errors.firstName !== undefined) { %>
+                        <span class="invalid-feedback" role="alert">
+                            <strong><%= errors.firstName %></strong>
+                        </span>
+                        <% } %>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
+                        <input type="text" class="form-control <%= errors.lastName !== undefined ? 'is-invalid' : '' %>" placeholder="Last Name" name="lastName" value="<%= formData.lastName !== undefined ? formData.lastName : '' %>">
+                        <% if (errors.lastName !== undefined) { %>
+                        <span class="invalid-feedback" role="alert">
+                            <strong><%= errors.lastName %></strong>
+                        </span>
+                        <% } %>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
+                        <input type="email" class="form-control <%= errors.email !== undefined ? 'is-invalid' : '' %>" placeholder="Email" name="email" value="<%= formData.email !== undefined ? formData.email : '' %>">
+                        <% if (errors.email !== undefined) { %>
+                        <span class="invalid-feedback" role="alert">
+                            <strong><%= errors.email %></strong>
+                        </span>
+                        <% } %>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Retype password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
+                        <input type="password" class="form-control <%= errors.password !== undefined ? 'is-invalid' : '' %>" placeholder="Password" name="password">
+                        <% if (errors.password !== undefined) { %>
+                        <span class="invalid-feedback" role="alert">
+                            <strong><%= errors.password %></strong>
+                        </span>
+                        <% } %>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control <%= errors.confirmPassword !== undefined ? 'is-invalid' : '' %>" placeholder="Retype password" name="confirmPassword">
+                        <% if (errors.confirmPassword !== undefined) { %>
+                        <span class="invalid-feedback" role="alert">
+                            <strong><%= errors.confirmPassword %></strong>
+                        </span>
+                        <% } %>
                     </div>
                     <div class="row">
                         <div class="col-8">
@@ -60,14 +68,14 @@
                     </div>
                 </form>
 
-                <a href="<%= BASE_URL %>" class="text-center">I already have a membership</a>
+                <a href="<%= process.env.BASE_URL %>" class="text-center">I already have a membership</a>
             </div>
             <!-- /.form-box -->
         </div><!-- /.card -->
     </div>
     <!-- /.register-box -->
 
-    <%- include('partials/footer') -%>>
+    <%- include('partials/auth/footer') -%>
 </body>
 
 </html>

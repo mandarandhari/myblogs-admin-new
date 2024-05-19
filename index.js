@@ -1,25 +1,30 @@
 const express = require('express');
-const url = require('url');
+require('dotenv').config();
+const bodyParser = require('body-parser');
 const path = require('path');
+const session = require('express-session');
+const { v4: uuidv4 } = require('uuid');
+const database = require('./app/database/database');
 const webRouter = require('./app/routes/web');
 
 const app = express();
+
+app.use(session({ genid: (req) => { return uuidv4(); }, secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'app/views'));
 
-
-app.listen(3000);
-
-app.use((req, res, next) => {
-    app.locals.BASE_URL = url.format({
-        protocol: req.protocol,
-        host: req.get('host')
-    });
-
-    next();
-})
-
-app.use(webRouter);
+database.authenticate().then(() => {
+    console.log("Connection has been established");
+    app.listen(process.env.PORT);
+    database.sync();
+    app.use(webRouter);
+}).catch((err) => {
+    console.log(err);
+    console.log("Failed to establish connection");
+});
