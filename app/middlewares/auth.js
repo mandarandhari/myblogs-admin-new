@@ -3,7 +3,9 @@ const { check, validationResult } = require('express-validator');
 const User = require('../models/user');
 
 const isLoggedIn = (req, res, next) => {
-    if (req?.session?.isLoggedIn !== undefined) {
+    const authRoutes = ['/login', '/register', '/forgot-password', '/change-password'];
+
+    if (req?.session?.isLoggedIn !== undefined && authRoutes.includes(req.path)) {
         res.redirect('/dashboard');
     } else {
         return next();

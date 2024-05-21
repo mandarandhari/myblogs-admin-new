@@ -9,7 +9,7 @@ const webRouter = require('./app/routes/web');
 
 const app = express();
 
-app.use(session({ genid: (req) => { return uuidv4(); }, secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
+app.use(session({ genid: (req) => { return uuidv4(); }, secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false, maxAge: 3600000 }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

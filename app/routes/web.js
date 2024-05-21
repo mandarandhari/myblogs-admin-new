@@ -1,11 +1,11 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 const authController = require('../controllers/auth');
+const blogsController = require('../controllers/blogs');
 
 const router = express.Router();
 
-router.get('/', authMiddleware.isLoggedIn, (req, res) => {
-    console.log(req?.session);
+router.get('/', (req, res) => {
     if (req?.session?.isLoggedIn !== undefined) {
         res.redirect('/dashboard');
     } else {
@@ -25,8 +25,12 @@ router.get('/forgot-password', authMiddleware.isLoggedIn, authController.forgot_
 
 router.get('/change-password', authMiddleware.isLoggedIn, authController.change_password_get);
 
-router.get('/dashboard', (req, res) => {
-    res.render('dashboard', {});
+router.get('/dashboard', authMiddleware.isLoggedIn, (req, res) => {
+    res.render('template', { view: 'dashboard', active: 'dashboard' });
 });
+
+router.get('/blogs', blogsController.blogs_get);
+
+router.get('/blogs/add', authMiddleware.isLoggedIn, blogsController.add_blog_get);
 
 module.exports = router;
