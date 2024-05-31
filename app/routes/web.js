@@ -1,7 +1,8 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 const authController = require('../controllers/auth');
-const blogsController = require('../controllers/blogs');
+const postsController = require('../controllers/posts');
+const postsMiddleware = require('../middlewares/posts');
 
 const router = express.Router();
 
@@ -26,11 +27,13 @@ router.get('/forgot-password', authMiddleware.isLoggedIn, authController.forgot_
 router.get('/change-password', authMiddleware.isLoggedIn, authController.change_password_get);
 
 router.get('/dashboard', authMiddleware.isLoggedIn, (req, res) => {
-    res.render('template', { view: 'dashboard', active: 'dashboard' });
+    res.render('template', { view: 'dashboard', active: 'dashboard', title: 'Dashboard' });
 });
 
-router.get('/blogs', blogsController.blogs_get);
+router.get('/posts', authMiddleware.isLoggedIn, postsController.posts_get);
 
-router.get('/blogs/add', authMiddleware.isLoggedIn, blogsController.add_blog_get);
+router.get('/posts/add', authMiddleware.isLoggedIn, postsController.add_post_get);
+
+router.post('/posts/add', [authMiddleware.isLoggedIn, postsMiddleware.uploadBlogImage, postsMiddleware.addBlogValidation], postsController.add_post_post);
 
 module.exports = router;

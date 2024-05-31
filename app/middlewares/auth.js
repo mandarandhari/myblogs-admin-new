@@ -5,10 +5,18 @@ const User = require('../models/user');
 const isLoggedIn = (req, res, next) => {
     const authRoutes = ['/login', '/register', '/forgot-password', '/change-password'];
 
-    if (req?.session?.isLoggedIn !== undefined && authRoutes.includes(req.path)) {
-        res.redirect('/dashboard');
+    if (authRoutes.includes(req.path)) {
+        if (req?.session?.isLoggedIn !== undefined) {
+            res.redirect('/dashboard');
+        } else {
+            return next();
+        }
     } else {
-        return next();
+        if (req?.session?.isLoggedIn === undefined) {
+            res.redirect('/login');
+        } else {
+            return next();
+        }
     }
 }
 

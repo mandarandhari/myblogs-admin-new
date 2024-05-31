@@ -1,0 +1,52 @@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Blog Posts</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Title</th>
+                                <th style="width: 25%;">Created On</th>
+                                <th style="width: 20%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (let key in posts) { %>
+                            <tr>
+                                <td><%= parseInt(key) + 1 %></td>
+                                <td><%= posts[key].title %></td>
+                                <%
+                                    const createdAt = new Date(posts[key].createdAt);
+                                    const createdAtDate = `${String(createdAt.getDate()).padStart(2, '0')}-${String(createdAt.getMonth()).padStart(2, '0')}-${String(createdAt.getFullYear()).padStart(2, '0')} ${String(createdAt.getHours()).padStart(2, '0')}:${String(createdAt.getMinutes()).padStart(2, '0')}:${String(createdAt.getSeconds()).padStart(2, '0')}`;    
+                                %>
+                                <td><%= createdAtDate %></td>
+                                <td>
+                                    <a href="<%= process.env.BASE_URL %>/post/edit/<%= posts[key].id %>" class="btn btn-primary btn-sm">Edit</a>
+                                    <input type="button" value="Delete" class="btn btn-danger btn-sm">
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>

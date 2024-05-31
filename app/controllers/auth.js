@@ -13,9 +13,11 @@ const login_post = (req, res) => {
                     req.session.user = {
                         firstName: user.firstName,
                         lastName: user.lastName,
-                        email: user.email
+                        email: user.email,
+                        id: user.id
                     };
 
+                    req.session.cookie.maxAge = 3600000;
                     req.session.isLoggedIn = true;
 
                     console.log(req.session);
