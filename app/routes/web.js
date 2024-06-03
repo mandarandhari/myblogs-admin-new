@@ -34,6 +34,10 @@ router.get('/posts', authMiddleware.isLoggedIn, postsController.posts_get);
 
 router.get('/posts/add', authMiddleware.isLoggedIn, postsController.add_post_get);
 
-router.post('/posts/add', [authMiddleware.isLoggedIn, postsMiddleware.uploadBlogImage, postsMiddleware.addBlogValidation], postsController.add_post_post);
+router.post('/posts/add', [authMiddleware.isLoggedIn, postsMiddleware.uploadBlogImage, postsMiddleware.addPostValidation], postsController.add_post_post);
+
+router.get('/post/edit/:id', authMiddleware.isLoggedIn, postsController.edit_post_get);
+
+router.post('/post/edit/:id', [authMiddleware.isLoggedIn, postsMiddleware.uploadBlogImage, postsMiddleware.editPostValidation], postsController.edit_post_post);
 
 module.exports = router;

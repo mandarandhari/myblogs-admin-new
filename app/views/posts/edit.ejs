@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="<%= process.env.BASE_URL %>/plugins/summernote/summernote-bs4.min.css">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Blogs</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">General Form</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Blog</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form method="post" action="<%= process.env.BASE_URL %>/post/edit/<%= post.id %>" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control <%= errors.title !== undefined ? 'is-invalid' : '' %>" id="title" placeholder="Title" name="title" value="<%= formData.title !== undefined ? formData.title : post.title %>">
+                                    <% if (errors.title !== undefined) { %>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong><%= errors.title %></strong>
+                                    </span>
+                                    <% } %>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Short Description</label>
+                                    <textarea name="description" class="form-control <%= errors.description !== undefined ? 'is-invalid' : '' %>" id="description" cols="30" rows="5"><%= formData.description !== undefined ? formData.description : post.description %></textarea>
+                                    <% if (errors.description !== undefined) { %>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong><%= errors.description %></strong>
+                                    </span>
+                                    <% } %>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">Content</label>
+                                    <textarea name="content" class="<%= errors.content !== undefined ? 'is-invalid' : '' %>" id="content" cols="30" rows="30"><%= formData.content !== undefined ? formData.content : post.content %></textarea>
+                                    <% if (errors.content !== undefined) { %>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong><%= errors.content %></strong>
+                                    </span>
+                                    <% } %>
+                                </div>
+                                <div class="form-group">
+                                    <label for="blogImage">Blog Image</label>
+                                    <div class="input-group">
+                                        <div class="custom-file <%= errors.blogImage !== undefined ? 'is-invalid' : '' %>">
+                                            <input type="file" class="custom-file-input" id="blogImage" name="blogImage">
+                                            <label class="custom-file-label" for="blogImage">Choose file</label>
+                                        </div>
+                                        <% if (errors.blogImage !== undefined) { %>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong><%= errors.blogImage %></strong>
+                                        </span>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary float-right">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- jQuery -->
+<script src="<%= process.env.BASE_URL %>/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="<%= process.env.BASE_URL %>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Summernote -->
+<script src="<%= process.env.BASE_URL %>/plugins/summernote/summernote-bs4.min.js"></script>
+<script>
+    $('#content').summernote();
+</script>

@@ -1,3 +1,4 @@
+const fs = require('fs');
 const Post = require("../models/post");
 
 const posts_get = (req, res) => {
@@ -36,12 +37,67 @@ const add_post_post = (req, res) => {
     });
 }
 
-const edit_post_get = () => {
-
+const edit_post_get = (req, res) => {
+    if (req.params.id) {
+        Post.findOne({
+            attributes: ['id', 'title', 'description', 'content'],
+            where: {
+                id: req.params.id,
+                userId: req.session.user.id
+            }
+        })
+        .then(post => {
+            res.render('template', { title: 'Edit Post', active: 'posts', view: 'posts/edit', errors: {}, formData: {}, post })
+        })
+        .catch(err => console.log(err));
+    } else {
+        res.redirect('/posts');
+    }
 }
 
-const edit_post_post = () => {
+const edit_post_post = (req, res) => {
+    const dataToUpdate = {
+        title: req.body.title,
+        description: req.body.description,
+        content: req.body.content
+    };
 
+    if (req.file !== undefined) {
+        dataToUpdate.imagePath = req.file.filename;
+
+        Post.findOne(
+            {
+                where: {
+                    id: req.params.id,
+                    userId: req.session.user.id
+                }
+            }
+        )
+        .then(post => {
+            fs.unlink(`./storage/posts/${req.session.user.id}/${post.imagePath}`, err => {
+                if (err) {
+                    throw err;
+                }
+    
+                console.log('File has been deleted');
+            });
+        })
+        .catch(err => console.log(err));
+    }
+
+    Post.update(
+        dataToUpdate,
+        {
+            where: {
+                id: req.params.id,
+                userId: req.session.user.id
+            }
+        }
+    )
+    .then(post => {
+        res.redirect('/posts');
+    })
+    .catch(err => console.log(err));
 }
 
 const delete_post_post = () => {
