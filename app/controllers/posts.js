@@ -65,22 +65,24 @@ const edit_post_post = (req, res) => {
     if (req.file !== undefined) {
         dataToUpdate.imagePath = req.file.filename;
 
-        Post.findOne(
-            {
-                where: {
-                    id: req.params.id,
-                    userId: req.session.user.id
-                }
+        Post.findOne({
+            where: {
+                id: req.params.id,
+                userId: req.session.user.id
             }
-        )
+        })
         .then(post => {
-            fs.unlink(`./storage/posts/${req.session.user.id}/${post.imagePath}`, err => {
-                if (err) {
-                    throw err;
-                }
-    
-                console.log('File has been deleted');
-            });
+            const imagePath = `./storage/posts/${req.session.user.id}/${post.imagePath}`;
+
+            if (fs.existsSync(imagePath)) {
+                fs.unlink(imagePath, err => {
+                    if (err) {
+                        throw err;
+                    }
+        
+                    console.log('File has been deleted');
+                });
+            }
         })
         .catch(err => console.log(err));
     }
@@ -100,8 +102,35 @@ const edit_post_post = (req, res) => {
     .catch(err => console.log(err));
 }
 
-const delete_post_post = () => {
+const delete_post_get = (req, res) => {
+    if (req.params.id) {
+        Post.findOne({
+            where: {
+                id: req.params.id,
+                userId: req.session.user.id
+            }
+        })
+        .then(post => {
+            if (post) {
+                Post.destroy({
+                    where: {
+                        id: req.params.id
+                    },
+                    force: true
+                });
+            } else {
+                throw Error("Post not found");
+            }
+        })
+        .then(result => {
+            console.log(result);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
 
+    res.redirect('/posts');
 }
 
 module.exports = {
@@ -111,5 +140,5 @@ module.exports = {
     add_post_post,
     edit_post_get,
     edit_post_post,
-    delete_post_post
+    delete_post_get
 }

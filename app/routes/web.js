@@ -40,4 +40,6 @@ router.get('/post/edit/:id', authMiddleware.isLoggedIn, postsController.edit_pos
 
 router.post('/post/edit/:id', [authMiddleware.isLoggedIn, postsMiddleware.uploadBlogImage, postsMiddleware.editPostValidation], postsController.edit_post_post);
 
+router.get('/post/delete/:id', authMiddleware.isLoggedIn, postsController.delete_post_get);
+
 module.exports = router;

@@ -33,7 +33,7 @@
                                 <td><%= createdAtDate %></td>
                                 <td>
                                     <a href="<%= process.env.BASE_URL %>/post/edit/<%= posts[key].id %>" class="btn btn-primary btn-sm">Edit</a>
-                                    <input type="button" value="Delete" class="btn btn-danger btn-sm">
+                                    <a href="<%= process.env.BASE_URL %>/post/delete/<%= posts[key].id %>" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
                             <% } %>
