@@ -8,6 +8,7 @@ const multer = require('multer');
 const fs = require('fs');
 const database = require('./app/database/database');
 const webRouter = require('./app/routes/web');
+const apiRouter = require('./app/routes/api');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/storage', express.static(path.join(__dirname, 'storage')));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'app/views'));
@@ -28,6 +30,7 @@ database.authenticate().then(() => {
     app.listen(process.env.PORT);
     database.sync();
     app.use(webRouter);
+    app.use(apiRouter);
 }).catch((err) => {
     console.log(err);
     console.log("Failed to establish connection");
